@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
             insets
         }
         // 첫 실행시 보여줄 화면 세팅(MainFragment)
-        replaceFragment(FragmentName.INPUT_FRAGMENT, false, null)
+        replaceFragment(FragmentName.MAIN_FRAGMENT, false, null)
     }
 
     // 프래그먼트 교체 함수
@@ -63,12 +63,13 @@ class MainActivity : AppCompatActivity() {
                 addToBackStack(fragmentName.str)
             }
         }
-        // 프래그먼트를 BackStack에서 제거하는 메서드
-        fun removeFragment(fragmentName: FragmentName) {
-            supportFragmentManager.popBackStack(
-                fragmentName.str,
-                FragmentManager.POP_BACK_STACK_INCLUSIVE
-            )
-        }
+    }
+
+    // 프래그먼트를 BackStack에서 제거하는 메서드
+    fun removeFragment(fragmentName: FragmentName) {
+        supportFragmentManager.popBackStack(
+            fragmentName.str,
+            FragmentManager.POP_BACK_STACK_INCLUSIVE
+        )
     }
 }

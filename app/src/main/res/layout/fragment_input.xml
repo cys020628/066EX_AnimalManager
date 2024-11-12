@@ -147,6 +147,7 @@
                 android:stepSize="1.0"
                 android:valueFrom="1"
                 android:valueTo="50"
+                app:labelBehavior="visible"
                 tools:labelBehavior="visible" />
         </LinearLayout>
     </ScrollView>
