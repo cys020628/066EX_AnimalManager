@@ -111,6 +111,10 @@ class MainFragment : Fragment() {
                 when (it.itemId) {
                     R.id.navigationMenuShowDogInfo -> {
                         // 강아지 정보 전체 보기에 대한 처리 필요
+
+
+
+
                     }
 
                     R.id.navigationMenuShowCatInfo -> {

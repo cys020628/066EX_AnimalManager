@@ -77,6 +77,5 @@ class ShowFragment : Fragment() {
             // 몸무게
             textViewShowAnimalWeight.text = "10Kg"
         }
-
     }
 }
