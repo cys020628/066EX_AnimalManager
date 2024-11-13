@@ -1,7 +1,11 @@
+import org.gradle.kotlin.dsl.annotationProcessor
+import org.gradle.kotlin.dsl.libs
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    kotlin("kapt")
+    // kotlin("kapt") // 오류로 인해 ksp로 변경
+    alias(libs.plugins.ksp) // KSP 플러그인 적용
 }
 
 android {
@@ -39,6 +43,7 @@ android {
     }
 }
 
+
 dependencies {
 
     implementation(libs.androidx.core.ktx)
@@ -52,7 +57,8 @@ dependencies {
     // Room
     implementation(libs.androidx.room.runtime)
     annotationProcessor(libs.androidx.room.compiler)
-    kapt(libs.androidx.room.compiler)
+    ksp(libs.androidx.room.compiler)
+    // kapt(libs.androidx.room.compiler)
     // fragment
     implementation(libs.androidx.fragment.ktx)
 }

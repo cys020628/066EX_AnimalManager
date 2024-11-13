@@ -196,7 +196,6 @@ class MainFragment : Fragment() {
             animalList.removeAt(viewHolder.adapterPosition)
             // 삭제된 항목의 RecyclerView 갱신
             fragmentMainBinding.recyclerViewMain.adapter?.notifyItemRemoved(viewHolder.adapterPosition)
-
         }
     }
 }
