@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import com.lion.a066ex_animalmanager.MainActivity
 import com.lion.a066ex_animalmanager.R
 import com.lion.a066ex_animalmanager.databinding.FragmentInputBinding
+import com.lion.a066ex_animalmanager.util.AnimalGender
 import com.lion.a066ex_animalmanager.util.AnimalType
 import com.lion.a066ex_animalmanager.util.FragmentName
 
@@ -23,6 +24,8 @@ class InputFragment : Fragment() {
     ): View? {
         mainActivity = activity as MainActivity
         fragmentInputBinding = FragmentInputBinding.inflate(layoutInflater)
+        // Toolbar
+        setUpToolbar()
         return fragmentInputBinding.root
     }
 
@@ -39,7 +42,8 @@ class InputFragment : Fragment() {
             // 메뉴 클릭 리스너
             toolbarInput.setOnMenuItemClickListener {
                 when (it.itemId) {
-                    //R.id.input_toolbar_menu_save ->
+                    // 정보 저장
+                    R.id.show_toolbar_menu_modify -> saveData()
                 }
                 true
             }
@@ -64,12 +68,15 @@ class InputFragment : Fragment() {
 
             // 성별
             val animalGender = when (toggleGroupGender.checkedButtonId) {
-                R.id.buttonGenderMale -> "남자"
-                else -> "여자"
+                R.id.buttonGenderMale -> AnimalGender.ANIMAL_GENDER_MALE
+                else -> AnimalGender.ANIMAL_GENDER_FEMALE
             }
 
             // 몸무게
             val animalWeight = sliderAnimalWeight.value
+
+            // MainFragment로 돌아간다.
+            mainActivity.removeFragment(FragmentName.INPUT_FRAGMENT)
         }
     }
 }

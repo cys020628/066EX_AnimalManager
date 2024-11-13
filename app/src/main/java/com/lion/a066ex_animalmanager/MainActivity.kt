@@ -11,16 +11,19 @@ import com.google.android.material.transition.MaterialSharedAxis
 import com.lion.a066ex_animalmanager.databinding.ActivityMainBinding
 import com.lion.a066ex_animalmanager.fragment.InputFragment
 import com.lion.a066ex_animalmanager.fragment.MainFragment
+import com.lion.a066ex_animalmanager.fragment.ModifyFragment
+import com.lion.a066ex_animalmanager.fragment.ShowFragment
 import com.lion.a066ex_animalmanager.util.FragmentName
 
 class MainActivity : AppCompatActivity() {
     private lateinit var activityMainBinding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(activityMainBinding.root)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.drawerlayoutMain)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
@@ -39,6 +42,8 @@ class MainActivity : AppCompatActivity() {
         val newFragment = when (fragmentName) {
             FragmentName.MAIN_FRAGMENT -> MainFragment()
             FragmentName.INPUT_FRAGMENT -> InputFragment()
+            FragmentName.SHOW_FRAGMENT -> ShowFragment()
+            FragmentName.MODIFY_FRAGMENT -> ModifyFragment()
         }
 
         // bundle 객체가 null이 아니라면

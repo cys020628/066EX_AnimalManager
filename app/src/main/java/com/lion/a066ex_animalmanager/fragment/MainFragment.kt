@@ -4,7 +4,9 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnClickListener
 import android.view.ViewGroup
+import androidx.fragment.app.commit
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -41,13 +43,22 @@ class MainFragment : Fragment() {
         setUpRecyclerView()
         // ItemTouchHelper
         setUpItemTouchHelper()
+        // Navigation
+        setUpNavigation()
         return fragmentMainBinding.root
     }
 
     // Toolbar 세팅
     private fun setUpToolbar() {
         fragmentMainBinding.apply {
+            // 타이틀
             toolbarMain.title = "전체 동물 목록"
+            // 좌측 네비게이션 버튼
+            toolbarMain.setNavigationIcon(R.drawable.menu_24px)
+            // 네비게이션 버튼 리스너
+            toolbarMain.setNavigationOnClickListener {
+                drawerlayoutMain.open()
+            }
         }
     }
 
@@ -83,17 +94,62 @@ class MainFragment : Fragment() {
         animalItemTouchHelper.attachToRecyclerView(fragmentMainBinding.recyclerViewMain)
     }
 
+    // Navigation 설정
+    private fun setUpNavigation() {
+        fragmentMainBinding.apply {
+            navigationView.inflateMenu(R.menu.main_navigation_menu)
+            // 동물 전체 보기 메뉴를 선택된 상태로 설정
+            navigationView.setCheckedItem(R.id.navigationMenuShowAllAnimalInfo)
+
+            // 누른 아이템에 대한 리스너 처리
+            navigationView.setNavigationItemSelectedListener {
+                if (it.isCheckable == true) {
+                    // 체크 상태를 true로 준다.
+                    it.isChecked = true
+                }
+
+                when (it.itemId) {
+                    R.id.navigationMenuShowDogInfo -> {
+                        // 강아지 정보 전체 보기에 대한 처리 필요
+                    }
+
+                    R.id.navigationMenuShowCatInfo -> {
+                        //  고양이 정보 전체 보기에 대한 처리 필요
+                    }
+
+                    R.id.navigationMenuShowParrotInfo -> {
+                        // 앵무새 정보 전체 보기에 대한 처리 필요
+                    }
+                }
+                // NavigationView를 닫아준다.
+                drawerlayoutMain.close()
+                true
+            }
+        }
+    }
+
     // RecyclerViewAdapter
     private inner class AnimalRecyclerViewAdapter() :
-
         RecyclerView.Adapter<AnimalRecyclerViewAdapter.AnimalViewHolder>() {
+
         // ViewHolder
         inner class AnimalViewHolder(val rowMainBinding: RowMainBinding) :
-            RecyclerView.ViewHolder(rowMainBinding.root)
+            RecyclerView.ViewHolder(rowMainBinding.root), OnClickListener {
+            override fun onClick(v: View?) {
+                // 누른 동물의 번호를 담아준다.
+                val dataBundle = Bundle()
+                dataBundle.putInt("animalIdx", adapterPosition)
+                // ShowFragment로 이동
+                mainActivity.replaceFragment(FragmentName.SHOW_FRAGMENT, true, dataBundle)
+            }
+        }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnimalViewHolder {
             val rowMainBinding = RowMainBinding.inflate(layoutInflater, parent, false)
             val holder = AnimalViewHolder(rowMainBinding)
+
+            // 리스너 설정
+            rowMainBinding.root.setOnClickListener(holder)
             return holder
         }
 
@@ -121,7 +177,6 @@ class MainFragment : Fragment() {
                 ItemTouchHelper.ACTION_STATE_SWIPE,
                 ItemTouchHelper.START or ItemTouchHelper.END
             )
-
             return flag
         }
 
@@ -143,6 +198,5 @@ class MainFragment : Fragment() {
             fragmentMainBinding.recyclerViewMain.adapter?.notifyItemRemoved(viewHolder.adapterPosition)
 
         }
-
     }
 }

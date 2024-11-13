@@ -9,7 +9,7 @@
     tools:context=".fragment.InputFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbarInput"
+        android:id="@+id/toolbarModify"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
@@ -35,15 +35,14 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
             <com.google.android.material.button.MaterialButtonToggleGroup
-                android:id="@+id/toggleGroupType"
+                android:id="@+id/toggleModifyGroupType"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                app:checkedButton="@id/buttonTypeDog"
                 app:singleSelection="true">
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/buttonTypeDog"
+                    android:id="@+id/buttonModifyTypeDog"
                     style="@style/Widget.Material3.Button.OutlinedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -51,7 +50,7 @@
                     android:text="강아지" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/buttonTypeCat"
+                    android:id="@+id/buttonModifyTypeCat"
                     style="@style/Widget.Material3.Button.OutlinedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -59,7 +58,7 @@
                     android:text="고양이" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/buttonTypeParrot"
+                    android:id="@+id/buttonModifyTypeParrot"
                     style="@style/Widget.Material3.Button.OutlinedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -68,7 +67,7 @@
             </com.google.android.material.button.MaterialButtonToggleGroup>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textFieldInputName"
+                android:id="@+id/textFieldModifyName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -83,7 +82,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textFieldInputAge"
+                android:id="@+id/textFieldModifyAge"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -107,15 +106,14 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
             <com.google.android.material.button.MaterialButtonToggleGroup
-                android:id="@+id/toggleGroupGender"
+                android:id="@+id/toggleModifyGroupGender"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                app:checkedButton="@id/buttonGenderMale"
                 app:singleSelection="true">
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/buttonGenderMale"
+                    android:id="@+id/buttonModifyGenderMale"
                     style="@style/Widget.Material3.Button.OutlinedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -123,7 +121,7 @@
                     android:text="남자" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/buttonGenderFemale"
+                    android:id="@+id/buttonModifyGenderFemale"
                     style="@style/Widget.Material3.Button.OutlinedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -140,7 +138,7 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
             <com.google.android.material.slider.Slider
-                android:id="@+id/sliderAnimalWeight"
+                android:id="@+id/sliderModifyAnimalWeight"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"

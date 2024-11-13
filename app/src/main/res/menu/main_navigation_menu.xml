@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigationMenuShowAllAnimalInfo"
+        android:checkable="true"
+        android:title="동물 정보 전체"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/navigationMenuShowDogInfo"
+        android:checkable="true"
+        android:title="강아지 정보 전체"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/navigationMenuShowCatInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checkable="true"
+        android:title="고양이 정보 전체"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/navigationMenuShowParrotInfo"
+        android:checkable="true"
+        android:title="앵무새 정보 전체"
+        app:showAsAction="ifRoom" />
+</menu>
