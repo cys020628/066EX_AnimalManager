@@ -14,8 +14,13 @@ import com.lion.a066ex_animalmanager.viewModel.AnimalViewModel
 class AnimalRecyclerView(
     // 생성자의 인자로 MainActivity와 animalList를 받는다.
     private val mainActivity: MainActivity, // MainActivity
-    private val animalList: MutableList<AnimalViewModel> // 동물 목록
+    private var animalList: MutableList<AnimalViewModel> // 동물 목록
 ) : RecyclerView.Adapter<AnimalRecyclerView.AnimalViewHolder>() {
+
+    fun changeData(newList: MutableList<AnimalViewModel>) {
+        animalList = newList
+        notifyItemRangeChanged(0,newList.size)  // 데이터 갱신
+    }
 
     // ViewHolder
     inner class AnimalViewHolder(val rowMainBinding: RowMainBinding) :
