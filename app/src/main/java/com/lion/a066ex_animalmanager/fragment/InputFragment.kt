@@ -1,6 +1,7 @@
 package com.lion.a066ex_animalmanager.fragment
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -8,9 +9,16 @@ import android.view.ViewGroup
 import com.lion.a066ex_animalmanager.MainActivity
 import com.lion.a066ex_animalmanager.R
 import com.lion.a066ex_animalmanager.databinding.FragmentInputBinding
+import com.lion.a066ex_animalmanager.repository.AnimalRepository
 import com.lion.a066ex_animalmanager.util.AnimalGender
 import com.lion.a066ex_animalmanager.util.AnimalType
 import com.lion.a066ex_animalmanager.util.FragmentName
+import com.lion.a066ex_animalmanager.viewModel.AnimalViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.job
+import kotlinx.coroutines.launch
 
 
 class InputFragment : Fragment() {
@@ -64,7 +72,7 @@ class InputFragment : Fragment() {
             val animalName = textFieldInputName.editText?.text.toString()
 
             // 동물 나이
-            val animalAge = textFieldInputAge.editText?.text.toString()
+            val animalAge = textFieldInputAge.editText?.text.toString().toInt()
 
             // 성별
             val animalGender = when (toggleGroupGender.checkedButtonId) {
@@ -73,10 +81,25 @@ class InputFragment : Fragment() {
             }
 
             // 몸무게
-            val animalWeight = sliderAnimalWeight.value
+            val animalWeight = sliderAnimalWeight.value.toInt()
+            Log.e("test","animalWeight : $animalWeight")
 
-            // MainFragment로 돌아간다.
-            mainActivity.removeFragment(FragmentName.INPUT_FRAGMENT)
+            // 객체에 담는다
+            val animalViewModel =
+                AnimalViewModel(0, animalType, animalName, animalAge, animalGender, animalWeight)
+
+            // 데이터를 저장한다.
+            CoroutineScope(Dispatchers.Main).launch {
+                // 저장 작업이 끝날때 까지 기다린다.
+                val saveWork = async(Dispatchers.IO) {
+                    // 저장한다.
+                    AnimalRepository.insertAnimalInfo(mainActivity, animalViewModel)
+                }
+                saveWork.join()
+
+                // MainFragment로 돌아간다.
+                mainActivity.removeFragment(FragmentName.INPUT_FRAGMENT)
+            }
         }
     }
 }

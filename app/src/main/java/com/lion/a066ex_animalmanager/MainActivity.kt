@@ -14,9 +14,13 @@ import com.lion.a066ex_animalmanager.fragment.MainFragment
 import com.lion.a066ex_animalmanager.fragment.ModifyFragment
 import com.lion.a066ex_animalmanager.fragment.ShowFragment
 import com.lion.a066ex_animalmanager.util.FragmentName
+import com.lion.a066ex_animalmanager.viewModel.AnimalViewModel
 
 class MainActivity : AppCompatActivity() {
     private lateinit var activityMainBinding: ActivityMainBinding
+
+    // 동물 데이터
+    var animalList = mutableListOf<AnimalViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
