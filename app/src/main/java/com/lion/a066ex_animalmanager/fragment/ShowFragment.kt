@@ -21,13 +21,19 @@ class ShowFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        mainActivity = activity as MainActivity
         fragmentShowBinding = FragmentShowBinding.inflate(layoutInflater)
+        // initialize
+        initializeComponents()
         // Toolbar
         setUpToolbar()
         // SetTextData
         setTextData()
         return fragmentShowBinding.root
+    }
+
+    // initialize 세팅
+    private fun initializeComponents() {
+        mainActivity = activity as MainActivity
     }
 
     // Toolbar 세팅

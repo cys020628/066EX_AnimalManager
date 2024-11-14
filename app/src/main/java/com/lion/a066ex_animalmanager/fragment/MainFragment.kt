@@ -28,12 +28,6 @@ import kotlinx.coroutines.launch
 
 
 class MainFragment : Fragment() {
-
-    // 임시 데이터
-//    val animalList = MutableList(10) {
-//        "강아지 $it"
-//    }
-
     private lateinit var fragmentMainBinding: FragmentMainBinding
     private lateinit var mainActivity: MainActivity
     private lateinit var animalRecyclerView: AnimalRecyclerView
@@ -43,13 +37,9 @@ class MainFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        mainActivity = activity as MainActivity
-        animalRecyclerView = AnimalRecyclerView(mainActivity, mainActivity.animalList)
-        animalRecyclerViewTouchHelper = AnimalRecyclerViewTouchHelper(
-            mainActivity.animalList,
-            fragmentMainBinding.recyclerViewMain
-        )
         fragmentMainBinding = FragmentMainBinding.inflate(layoutInflater)
+        // initialize(초기화)
+        initializeComponents()
         // Toolbar
         setUpToolbar()
         // FAB
@@ -63,6 +53,16 @@ class MainFragment : Fragment() {
         // 데이터를 가져오고 RecyclerView 갱신
         selectAnimalDataAndRefreshRecyclerView()
         return fragmentMainBinding.root
+    }
+
+    // initialize 세팅
+    private fun initializeComponents() {
+        mainActivity = activity as MainActivity
+        animalRecyclerView = AnimalRecyclerView(mainActivity, mainActivity.animalList)
+        animalRecyclerViewTouchHelper = AnimalRecyclerViewTouchHelper(
+            mainActivity.animalList,
+            fragmentMainBinding.recyclerViewMain
+        )
     }
 
     // Toolbar 세팅
@@ -93,7 +93,6 @@ class MainFragment : Fragment() {
     private fun setUpRecyclerView() {
         fragmentMainBinding.apply {
             // Adapter
-            //recyclerViewMain.adapter = AnimalRecyclerViewAdapter()
             recyclerViewMain.adapter = animalRecyclerView
             // LayoutManager
             recyclerViewMain.layoutManager = LinearLayoutManager(mainActivity)
@@ -106,7 +105,7 @@ class MainFragment : Fragment() {
 
     // ItemTouchHelper 설정
     private fun setUpItemTouchHelper() {
-        // 이동이나 스와프가 발생했을 때 동작할 요소를 설정해준다.
+        // 이동이나 스와프가 발생했을 때 동작할 요소를 설정
         val animalItemTouchHelper = ItemTouchHelper(animalRecyclerViewTouchHelper)
         animalItemTouchHelper.attachToRecyclerView(fragmentMainBinding.recyclerViewMain)
     }
@@ -138,14 +137,14 @@ class MainFragment : Fragment() {
                         // 앵무새 정보 전체 보기에 대한 처리 필요
                     }
                 }
-                // NavigationView를 닫아준다.
+                // NavigationView를 닫는다.
                 drawerlayoutMain.close()
                 true
             }
         }
     }
 
-    // 데이터를 가져오고 RecyclerView를 갱신한다.
+    // 데이터를 가져오고 RecyclerView를 갱신
     fun selectAnimalDataAndRefreshRecyclerView() {
         // 동물 정보를 가져온다.
         CoroutineScope(Dispatchers.Main).launch {
@@ -154,7 +153,7 @@ class MainFragment : Fragment() {
                 AnimalRepository.selectAnimalDataAll(mainActivity)
             }
             val newList = selectWork.await()
-            // recyclerView 갱신(adapter에 있는 changeData 함수를 통해 직접 갱신한다.)
+            // recyclerView 갱신(adapter에 있는 changeData 함수를 통해 직접 갱신)
             animalRecyclerView.changeData(newList)
         }
     }

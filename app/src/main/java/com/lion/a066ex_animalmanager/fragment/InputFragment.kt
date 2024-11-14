@@ -30,11 +30,18 @@ class InputFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        mainActivity = activity as MainActivity
+
         fragmentInputBinding = FragmentInputBinding.inflate(layoutInflater)
+        // initialize
+        initializeComponents()
         // Toolbar
         setUpToolbar()
         return fragmentInputBinding.root
+    }
+
+    // initialize 세팅
+    private fun initializeComponents() {
+        mainActivity = activity as MainActivity
     }
 
     // Toolbar 세팅
