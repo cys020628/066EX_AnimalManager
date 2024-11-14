@@ -1,14 +1,21 @@
 package com.lion.a066ex_animalmanager.itemTouchHelper
 
+import android.content.Context
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ItemTouchHelper.Callback.makeFlag
 import androidx.recyclerview.widget.RecyclerView
+import com.lion.a066ex_animalmanager.repository.AnimalRepository
 import com.lion.a066ex_animalmanager.viewModel.AnimalViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
 class AnimalRecyclerViewTouchHelper(
      // 생성자의 인자로 animalList와 recyclerView를 받는다.
     private val animalList: MutableList<AnimalViewModel>, // 동물 목록
-    private val recyclerView : RecyclerView // RecyclerView
+    private val recyclerView : RecyclerView, // RecyclerView
+    private val context : Context // context
 ) : ItemTouchHelper.Callback() {
 
     // 이동 및 스와이프 설정
@@ -36,9 +43,17 @@ class AnimalRecyclerViewTouchHelper(
 
     // 항목 스와이프 시 설정
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        // 스와이프 된 순서의 항목을 제거
-        animalList.removeAt(viewHolder.adapterPosition)
-        // 삭제된 항목의 RecyclerView 갱신
-        recyclerView.adapter?.notifyItemRemoved(viewHolder.adapterPosition)
+        val position = viewHolder.adapterPosition
+        CoroutineScope(Dispatchers.Main).launch {
+            val work1 = async(Dispatchers.IO){
+                AnimalRepository.deleteAnimalInfoByStudentIdx(context, position)
+            }
+            work1.join()
+            // animalList에서 항목을 삭제
+            animalList.removeAt(position)
+
+            // RecyclerView 어댑터 갱신
+            recyclerView.adapter?.notifyItemRemoved(position)
+        }
     }
 }

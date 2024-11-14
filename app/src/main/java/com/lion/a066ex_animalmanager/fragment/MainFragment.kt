@@ -1,6 +1,7 @@
 package com.lion.a066ex_animalmanager.fragment
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -48,10 +49,8 @@ class MainFragment : Fragment() {
         setUpRecyclerView()
         // ItemTouchHelper
         setUpItemTouchHelper()
-        // Navigation
-        setUpNavigation()
         // 데이터를 가져오고 RecyclerView 갱신
-        selectAnimalDataAndRefreshRecyclerView()
+        refreshRecyclerView()
         return fragmentMainBinding.root
     }
 
@@ -61,20 +60,32 @@ class MainFragment : Fragment() {
         animalRecyclerView = AnimalRecyclerView(mainActivity, mainActivity.animalList)
         animalRecyclerViewTouchHelper = AnimalRecyclerViewTouchHelper(
             mainActivity.animalList,
-            fragmentMainBinding.recyclerViewMain
+            fragmentMainBinding.recyclerViewMain,mainActivity
         )
     }
+
 
     // Toolbar 세팅
     private fun setUpToolbar() {
         fragmentMainBinding.apply {
             // 타이틀
-            toolbarMain.title = "전체 동물 목록"
+            if (arguments != null) {
+                // BundleData가 있을경우 목록에 따라 타이틀을 분류한다.
+                val filterData = arguments?.getString("animal")
+                toolbarMain.title = when (filterData) {
+                    "dog" -> "강아지 동물 목록"
+                    "cat" -> "고양이 동물 목록"
+                    "parrot" -> "앵무새 동물 목록"
+                    else -> "전체 동물 목록"
+                }
+            } else {
+                toolbarMain.title = "전체 동물 목록"
+            }
             // 좌측 네비게이션 버튼
             toolbarMain.setNavigationIcon(R.drawable.menu_24px)
             // 네비게이션 버튼 리스너
             toolbarMain.setNavigationOnClickListener {
-                drawerlayoutMain.open()
+                mainActivity.activityMainBinding.drawerlayoutMain.open()
             }
         }
     }
@@ -110,47 +121,50 @@ class MainFragment : Fragment() {
         animalItemTouchHelper.attachToRecyclerView(fragmentMainBinding.recyclerViewMain)
     }
 
-    // Navigation 설정
-    private fun setUpNavigation() {
-        fragmentMainBinding.apply {
-            navigationView.inflateMenu(R.menu.main_navigation_menu)
-            // 동물 전체 보기 메뉴를 선택된 상태로 설정
-            navigationView.setCheckedItem(R.id.navigationMenuShowAllAnimalInfo)
-
-            // 누른 아이템에 대한 리스너 처리
-            navigationView.setNavigationItemSelectedListener {
-                if (it.isCheckable == true) {
-                    // 체크 상태를 true로 준다.
-                    it.isChecked = true
-                }
-
-                when (it.itemId) {
-                    R.id.navigationMenuShowDogInfo -> {
-                        // 강아지 정보 전체 보기에 대한 처리 필요
-                    }
-
-                    R.id.navigationMenuShowCatInfo -> {
-                        //  고양이 정보 전체 보기에 대한 처리 필요
-                    }
-
-                    R.id.navigationMenuShowParrotInfo -> {
-                        // 앵무새 정보 전체 보기에 대한 처리 필요
+    // 동물 목록이 어떤건지에 따라 필터링
+    fun filterData(animalList: MutableList<AnimalViewModel>): MutableList<AnimalViewModel> {
+        // 데이터가 null이 아니라면
+        if (arguments != null) {
+            val filterData = arguments?.getString("animal")
+            val newData = when (filterData) {
+                "dog" -> {
+                    animalList.filter {
+                        it.animalType.str == "강아지"
                     }
                 }
-                // NavigationView를 닫는다.
-                drawerlayoutMain.close()
-                true
+
+                "cat" -> {
+                    animalList.filter {
+                        it.animalType.str == "고양이"
+                    }
+                }
+
+                "parrot" -> {
+                    animalList.filter {
+                        it.animalType.str == "앵무새"
+                    }
+                }
+
+                else -> {
+                    animalList
+                }
             }
+            return newData.toMutableList()
+
+        } else {
+            return animalList
         }
     }
 
     // 데이터를 가져오고 RecyclerView를 갱신
-    fun selectAnimalDataAndRefreshRecyclerView() {
+    fun refreshRecyclerView() {
         // 동물 정보를 가져온다.
         CoroutineScope(Dispatchers.Main).launch {
             val selectWork = async(Dispatchers.IO) {
                 // 동물 정보를 가져온다.
-                AnimalRepository.selectAnimalDataAll(mainActivity)
+                val animalData = AnimalRepository.selectAnimalDataAll(mainActivity)
+                // 선택된 동물에 따라 데이터를 가공
+                filterData(animalData)
             }
             val newList = selectWork.await()
             // recyclerView 갱신(adapter에 있는 changeData 함수를 통해 직접 갱신)

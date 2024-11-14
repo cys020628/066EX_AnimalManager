@@ -1,12 +1,14 @@
 package com.lion.a066ex_animalmanager.recyclerView
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.lion.a066ex_animalmanager.MainActivity
+import com.lion.a066ex_animalmanager.R
 import com.lion.a066ex_animalmanager.databinding.RowMainBinding
 import com.lion.a066ex_animalmanager.util.FragmentName
 import com.lion.a066ex_animalmanager.viewModel.AnimalViewModel
@@ -55,7 +57,14 @@ class AnimalRecyclerView(
         position: Int
     ) {
         holder.rowMainBinding.apply {
+            Log.e("test","리싸이클러뷰 ${animalList[position]}")
             textViewRowAnimalName.text = animalList[position].animalName
+
+            imageViewRowAnimalType.setImageResource(when(animalList[position].animalType.str) {
+                "강아지" -> R.drawable.dog_icon
+                "고양이" -> R.drawable.cat_icon
+                else -> R.drawable.parrot_icon
+            })
         }
     }
 }
