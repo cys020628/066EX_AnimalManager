@@ -46,7 +46,7 @@ class AnimalRecyclerViewTouchHelper(
         val position = viewHolder.adapterPosition
         CoroutineScope(Dispatchers.Main).launch {
             val work1 = async(Dispatchers.IO){
-                AnimalRepository.deleteAnimalInfoByStudentIdx(context, position)
+                AnimalRepository.deleteAnimalInfoByAnimalIdx(context, position)
             }
             work1.join()
             // animalList에서 항목을 삭제

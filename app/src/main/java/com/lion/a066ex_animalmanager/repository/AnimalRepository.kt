@@ -88,7 +88,7 @@ class AnimalRepository(context: Context) {
             // 데이터 베이스 객체
             val animalDatabase = AnimalDatabase.getInstance(context)
 
-            // 학생 한명의 정보를 가져온다.
+            // 동물 한마리 정보를 가져온다.
             val animalVO = animalDatabase?.animalDAO()?.selectAnimalDataByAnimalIdx(animalIdx)
             // 동물 객체에 담는다
             val animalType = when(animalVO?.animalType){
@@ -120,13 +120,44 @@ class AnimalRepository(context: Context) {
         }
 
         // 동물 정보 삭제 메서드
-        fun deleteAnimalInfoByStudentIdx(context: Context, animalIdx: Int) {
+        fun deleteAnimalInfoByAnimalIdx(context: Context, animalIdx: Int) {
             // 데이터 베이스 객체
             val animalDatabase = AnimalDatabase.getInstance(context)
             // 삭제할 동물 번호를 가지고 있을 객체를 생성한다.
             val animalVO = AnimalVo(animalIdx = animalIdx)
             // 삭제한다.
             animalDatabase?.animalDAO()?.deleteAnimalInfo(animalVO)
+        }
+
+        // 동물 정보 수정 메서드
+        fun updateAnimalInfo(context: Context, animalViewModel: AnimalViewModel){
+            // 데이터 베이스 객체
+            val animalDataBase = AnimalDatabase.getInstance(context)
+
+            // 객체에 담아준다,
+            // 동물 Idx
+            val animalIdx = animalViewModel.animalIdx
+
+            // 동물 타입
+            val animalType = animalViewModel.animalType.number
+
+            // 동물 이름
+            val animalName = animalViewModel.animalName
+
+            // 동물 나이
+            val animalAge = animalViewModel.animalAge
+
+            // 동물 성별
+            val animalGender = animalViewModel.animalGender.number
+
+            // 동물 몸무게
+            val animalWeight = animalViewModel.animalWeight
+
+            // VO에 담아준다.
+            val animalVO = AnimalVo(animalIdx, animalType, animalName, animalAge,animalGender,animalWeight)
+
+            // 수정한다.
+            animalDataBase?.animalDAO()?.updateAnimalData(animalVO)
         }
     }
 }

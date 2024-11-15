@@ -60,10 +60,13 @@ class ShowFragment : Fragment() {
                 when(it.itemId) {
                     // 정보 수정
                     R.id.show_toolbar_menu_modify -> {
-                        // 동물 번호 담기
-                        val dataBundle = Bundle()
-                        dataBundle.putInt("animalIdx", arguments?.getInt("animalIdx")!!)
-                        mainActivity.replaceFragment(FragmentName.MODIFY_FRAGMENT,true,dataBundle)
+                        // arguments가 있는지 검사한다.
+                        if(arguments != null) {
+                            // 동물 번호 담기
+                            val dataBundle = Bundle()
+                            dataBundle.putInt("animalIdx", arguments?.getInt("animalIdx")!!)
+                            mainActivity.replaceFragment(FragmentName.MODIFY_FRAGMENT,true,dataBundle)
+                        }
                     }
                     // 정보 삭제
                     R.id.show_toolbar_menu_delete -> {
@@ -84,7 +87,7 @@ class ShowFragment : Fragment() {
 
             CoroutineScope(Dispatchers.Main).launch {
                 val work1 = async(Dispatchers.IO){
-                    AnimalRepository.deleteAnimalInfoByStudentIdx(mainActivity, animalIdx)
+                    AnimalRepository.deleteAnimalInfoByAnimalIdx(mainActivity, animalIdx)
                 }
                 work1.join()
                 // MainFragment 이동
@@ -119,22 +122,22 @@ class ShowFragment : Fragment() {
                 textViewShowAnimalGender.text = ""
                 textViewShowAnimalWeight.text = ""
 
-                // 학생 번호 추출
+                // 동물 번호 추출
                 val animalIdx = arguments?.getInt("animalIdx")
 
-                // 학생 데이터를 가져와 출력한다.
+                // 동물 데이터를 가져와 출력한다.
                 CoroutineScope(Dispatchers.Main).launch {
                     val work1 = async(Dispatchers.IO){
                         AnimalRepository.selectAnimalInfoByAnimalIdx(mainActivity, animalIdx!!)
                     }
-                    val studentViewModel = work1.await()
+                    val animalViewModel = work1.await()
 
                     // 설정한 문자열 가져오기
-                    val animalTypeFormat = String.format(getString(R.string.animalTypeFormat),studentViewModel.animalType.str)
-                    val animalNameFormat = String.format(getString(R.string.animalNameFormat),studentViewModel.animalName)
-                    val animalAgeFormat = String.format(getString(R.string.animalAgeFormat),studentViewModel.animalAge.toString())
-                    val animalGenderFormat = String.format(getString(R.string.animalGenderFormat),studentViewModel.animalGender.str)
-                    val animalWeightFormat = String.format(getString(R.string.animalWeightFormat),studentViewModel.animalWeight.toString())
+                    val animalTypeFormat = String.format(getString(R.string.animalTypeFormat),animalViewModel.animalType.str)
+                    val animalNameFormat = String.format(getString(R.string.animalNameFormat),animalViewModel.animalName)
+                    val animalAgeFormat = String.format(getString(R.string.animalAgeFormat),animalViewModel.animalAge.toString())
+                    val animalGenderFormat = String.format(getString(R.string.animalGenderFormat),animalViewModel.animalGender.str)
+                    val animalWeightFormat = String.format(getString(R.string.animalWeightFormat),animalViewModel.animalWeight.toString())
 
                     // 동물 종류
                     fragmentShowBinding.textViewShowAnimalType.text = animalTypeFormat
