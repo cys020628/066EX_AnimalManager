@@ -5,12 +5,14 @@
     <item
         android:id="@+id/navigationMenuShowAllAnimalInfo"
         android:checkable="true"
+        android:icon="@android:drawable/ic_popup_sync"
         android:title="동물 정보 전체"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/navigationMenuShowDogInfo"
         android:checkable="true"
+        android:icon="@drawable/dog_icon"
         android:title="강아지 정보 전체"
         app:showAsAction="ifRoom" />
     <item
@@ -18,11 +20,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:checkable="true"
+        android:icon="@drawable/cat_icon"
         android:title="고양이 정보 전체"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/navigationMenuShowParrotInfo"
         android:checkable="true"
+        android:icon="@drawable/parrot_icon"
         android:title="앵무새 정보 전체"
         app:showAsAction="ifRoom" />
 </menu>
