@@ -169,6 +169,8 @@ class MainFragment : Fragment() {
             val newList = selectWork.await()
             // recyclerView 갱신(adapter에 있는 changeData 함수를 통해 직접 갱신)
             animalRecyclerView.changeData(newList)
+            // TouchHelper의 리스트도 갱신
+            animalRecyclerViewTouchHelper.refreshAnimalList(newList)
         }
     }
 }

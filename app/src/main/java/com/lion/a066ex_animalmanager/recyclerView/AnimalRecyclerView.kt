@@ -31,6 +31,7 @@ class AnimalRecyclerView(
             // 누른 동물의 번호를 담아준다.
             val dataBundle = Bundle()
             dataBundle.putInt("animalIdx", animalList[adapterPosition].animalIdx)
+            Log.e("recyclerViewDIdx","reyclerView${animalList[adapterPosition].animalIdx}")
             // ShowFragment로 이동
             mainActivity.replaceFragment(FragmentName.SHOW_FRAGMENT, true, dataBundle)
         }
