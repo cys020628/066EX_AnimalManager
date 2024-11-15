@@ -32,11 +32,6 @@ class AnimalRecyclerViewTouchHelper(
         return flag
     }
 
-    // animalList가 null 값으 들어오므로 mainFragment를 통해 animalList를 받는다.
-    fun refreshAnimalList(newList: MutableList<AnimalViewModel>) {
-        animalList = newList
-    }
-
     // 항목 이동 시 설정
     override fun onMove(
         recyclerView: RecyclerView,
@@ -63,5 +58,10 @@ class AnimalRecyclerViewTouchHelper(
             // RecyclerView 어댑터 갱신
             recyclerView.adapter?.notifyItemRemoved(position)
         }
+    }
+
+    // animalList가 null 값으 들어오므로 mainFragment를 통해 animalList를 받는다.
+    fun refreshAnimalList(newList: MutableList<AnimalViewModel>) {
+        animalList = newList
     }
 }

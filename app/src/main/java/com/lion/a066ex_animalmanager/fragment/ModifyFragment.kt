@@ -64,10 +64,10 @@ class ModifyFragment : Fragment() {
                         // 빈공간이 있는지 검사한다.
                         if (isEmptyTextSW()) {
                             // 빈공간이 없다면
-                            showDialog(1)
+                            showDialog(true)
                         } else {
                             // 빈공간이 있다면
-                            showDialog(2)
+                            showDialog(false)
                         }
                     }
                 }
@@ -127,32 +127,29 @@ class ModifyFragment : Fragment() {
         }
     }
 
-    private fun showDialog(value: Int) {
+    private fun showDialog(saveSW: Boolean) {
         val materialAlertDialogBuilder = MaterialAlertDialogBuilder(mainActivity)
 
-        when (value) {
-            1 -> {
-                materialAlertDialogBuilder.setTitle("수정")
-                materialAlertDialogBuilder.setMessage("이전 데이터로 복원할 수 없습니다")
-                materialAlertDialogBuilder.setNeutralButton("취소", null)
-                materialAlertDialogBuilder.setPositiveButton("수정") { dialogInterface: DialogInterface, i: Int ->
-                    editAnimalData()
-                }
-                materialAlertDialogBuilder.show()
+        // saveSW가 true 라면 수정, false면 오류
+        if (saveSW) {
+            materialAlertDialogBuilder.setTitle("수정")
+            materialAlertDialogBuilder.setMessage("이전 데이터로 복원할 수 없습니다")
+            materialAlertDialogBuilder.setNeutralButton("취소", null)
+            materialAlertDialogBuilder.setPositiveButton("수정") { dialogInterface: DialogInterface, i: Int ->
+                editAnimalData()
             }
+            materialAlertDialogBuilder.show()
+        } else {
+            val dialogBinding = InputDialogLayoutBinding.inflate(mainActivity.layoutInflater)
+            materialAlertDialogBuilder.setView(dialogBinding.root)
+            val dialog = materialAlertDialogBuilder.create()
+            dialogBinding.dialogTitle.text = "오류"
+            dialogBinding.dialogMessage.text = "빈공간이 있습니다.\n다시 입력해주세요."
 
-            2 -> {
-                val dialogBinding = InputDialogLayoutBinding.inflate(mainActivity.layoutInflater)
-                materialAlertDialogBuilder.setView(dialogBinding.root)
-                val dialog = materialAlertDialogBuilder.create()
-                dialogBinding.dialogTitle.text = "오류"
-                dialogBinding.dialogMessage.text = "빈공간이 있습니다.\n다시 입력해주세요."
-
-                dialogBinding.dialogButton.setOnClickListener {
-                    dialog.dismiss()
-                }
-                dialog.show()
+            dialogBinding.dialogButton.setOnClickListener {
+                dialog.dismiss()
             }
+            dialog.show()
         }
     }
 
@@ -201,12 +198,19 @@ class ModifyFragment : Fragment() {
                 val animalWeight = sliderModifyAnimalWeight.value.toInt()
 
                 // AnimalViewModel에 담는다.
-                val animalViewModel = AnimalViewModel(animalIdx,animalType,animalName,animalAge,animalGender,animalWeight)
+                val animalViewModel = AnimalViewModel(
+                    animalIdx,
+                    animalType,
+                    animalName,
+                    animalAge,
+                    animalGender,
+                    animalWeight
+                )
 
                 // 동물 정보를 수정
                 CoroutineScope(Dispatchers.Main).launch {
-                    val work1 = async(Dispatchers.IO){
-                        AnimalRepository.updateAnimalInfo(mainActivity,animalViewModel)
+                    val work1 = async(Dispatchers.IO) {
+                        AnimalRepository.updateAnimalInfo(mainActivity, animalViewModel)
                     }
                     work1.join()
                     mainActivity.removeFragment(FragmentName.MODIFY_FRAGMENT)

@@ -19,11 +19,6 @@ class AnimalRecyclerView(
     private var animalList: MutableList<AnimalViewModel> // 동물 목록
 ) : RecyclerView.Adapter<AnimalRecyclerView.AnimalViewHolder>() {
 
-    fun changeData(newList: MutableList<AnimalViewModel>) {
-        animalList = newList
-        notifyItemRangeChanged(0,newList.size)  // 데이터 갱신
-    }
-
     // ViewHolder
     inner class AnimalViewHolder(val rowMainBinding: RowMainBinding) :
         RecyclerView.ViewHolder(rowMainBinding.root), OnClickListener {
@@ -66,6 +61,12 @@ class AnimalRecyclerView(
                 else -> R.drawable.parrot_icon
             })
         }
+    }
+
+    // animalList를 받아와 데이터를 갱신
+    fun changeData(newList: MutableList<AnimalViewModel>) {
+        animalList = newList
+        notifyItemRangeChanged(0,newList.size)  // 데이터 갱신
     }
 }
 

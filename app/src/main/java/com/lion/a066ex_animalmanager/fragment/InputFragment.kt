@@ -64,10 +64,10 @@ class InputFragment : Fragment() {
                     R.id.show_toolbar_menu_modify -> {
                         if (isEmptyTextSW()) {
                             // 빈공간이 없는 경우
-                            showDialog(1,"저장","저장 완료되었습니다")
+                            showDialog( "저장", "저장 완료되었습니다",true)
                         } else {
                             // 빈공간이 있는 경우ㅊ
-                            showDialog(2,"오류","빈공간이 있습니다.\n다시 입력해주세요.")
+                            showDialog("오류", "빈공간이 있습니다.\n다시 입력해주세요.",false)
                         }
                     }
                 }
@@ -76,9 +76,9 @@ class InputFragment : Fragment() {
         }
     }
 
-    private fun showDialog(value:Int,title: String, message: String) {
+    private fun showDialog(title: String, message: String, saveSW: Boolean) {
         // 다이얼로그를 띄워주다.
-        val dialogBinding =InputDialogLayoutBinding.inflate(mainActivity.layoutInflater)
+        val dialogBinding = InputDialogLayoutBinding.inflate(mainActivity.layoutInflater)
         val materialAlertDialogBuilder =
             MaterialAlertDialogBuilder(mainActivity)
 
@@ -90,13 +90,12 @@ class InputFragment : Fragment() {
         dialogBinding.dialogMessage.text = message
 
         dialogBinding.dialogButton.setOnClickListener {
-            // value 값을 나눠 1이면 저장, 2이면 그냥 닫힘
-            when(value) {
-                1 -> {
-                    saveData()
-                    dialog.dismiss()
-                }
-                else -> dialog.dismiss()
+            // saveSW가 true를 반환하면 데이터를 저장 false를 반환하면 저장하지 않는다.
+            if (saveSW) {
+                saveData()
+                dialog.dismiss()
+            } else {
+                dialog.dismiss()
             }
         }
 
@@ -149,11 +148,11 @@ class InputFragment : Fragment() {
 
             // 데이터를 저장한다.
             CoroutineScope(Dispatchers.Main).launch {
-                // 저장 작업이 끝날때 까지 기다린다.
                 val saveWork = async(Dispatchers.IO) {
                     // 저장한다.
                     AnimalRepository.insertAnimalInfo(mainActivity, animalViewModel)
                 }
+                // 저장 작업이 끝날때 까지 기다린다.
                 saveWork.join()
 
                 // MainFragment로 돌아간다.

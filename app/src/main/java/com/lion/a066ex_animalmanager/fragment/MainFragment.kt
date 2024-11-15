@@ -20,6 +20,7 @@ import com.lion.a066ex_animalmanager.databinding.RowMainBinding
 import com.lion.a066ex_animalmanager.itemTouchHelper.AnimalRecyclerViewTouchHelper
 import com.lion.a066ex_animalmanager.recyclerView.AnimalRecyclerView
 import com.lion.a066ex_animalmanager.repository.AnimalRepository
+import com.lion.a066ex_animalmanager.util.AnimalType
 import com.lion.a066ex_animalmanager.util.FragmentName
 import com.lion.a066ex_animalmanager.viewModel.AnimalViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -54,7 +55,7 @@ class MainFragment : Fragment() {
         return fragmentMainBinding.root
     }
 
-    // initialize 세팅
+    // initialize 세팅(초기화)
     private fun initializeComponents() {
         mainActivity = activity as MainActivity
         animalRecyclerView = AnimalRecyclerView(mainActivity, mainActivity.animalList)
@@ -73,9 +74,9 @@ class MainFragment : Fragment() {
                 // BundleData가 있을경우 목록에 따라 타이틀을 분류한다.
                 val filterData = arguments?.getString("animal")
                 toolbarMain.title = when (filterData) {
-                    "dog" -> "강아지 동물 목록"
-                    "cat" -> "고양이 동물 목록"
-                    "parrot" -> "앵무새 동물 목록"
+                    AnimalType.ANIMAL_TYPE_DOG.str -> "강아지 동물 목록"
+                    AnimalType.ANIMAL_TYPE_CAT.str -> "고양이 동물 목록"
+                    AnimalType.ANIMAL_TYPE_PARROT.str -> "앵무새 동물 목록"
                     else -> "전체 동물 목록"
                 }
             } else {
@@ -122,24 +123,24 @@ class MainFragment : Fragment() {
     }
 
     // 동물 목록이 어떤건지에 따라 필터링
-    fun filterData(animalList: MutableList<AnimalViewModel>): MutableList<AnimalViewModel> {
+    private fun filterData(animalList: MutableList<AnimalViewModel>): MutableList<AnimalViewModel> {
         // 데이터가 null이 아니라면
         if (arguments != null) {
             val filterData = arguments?.getString("animal")
             val newData = when (filterData) {
-                "dog" -> {
+                AnimalType.ANIMAL_TYPE_DOG.str -> {
                     animalList.filter {
                         it.animalType.str == "강아지"
                     }
                 }
 
-                "cat" -> {
+                AnimalType.ANIMAL_TYPE_CAT.str -> {
                     animalList.filter {
                         it.animalType.str == "고양이"
                     }
                 }
 
-                "parrot" -> {
+                AnimalType.ANIMAL_TYPE_PARROT.str -> {
                     animalList.filter {
                         it.animalType.str == "앵무새"
                     }
@@ -157,7 +158,7 @@ class MainFragment : Fragment() {
     }
 
     // 데이터를 가져오고 RecyclerView를 갱신
-    fun refreshRecyclerView() {
+    private fun refreshRecyclerView() {
         // 동물 정보를 가져온다.
         CoroutineScope(Dispatchers.Main).launch {
             val selectWork = async(Dispatchers.IO) {

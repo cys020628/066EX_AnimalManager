@@ -14,6 +14,7 @@ import com.lion.a066ex_animalmanager.fragment.InputFragment
 import com.lion.a066ex_animalmanager.fragment.MainFragment
 import com.lion.a066ex_animalmanager.fragment.ModifyFragment
 import com.lion.a066ex_animalmanager.fragment.ShowFragment
+import com.lion.a066ex_animalmanager.util.AnimalType
 import com.lion.a066ex_animalmanager.util.FragmentName
 import com.lion.a066ex_animalmanager.viewModel.AnimalViewModel
 
@@ -59,26 +60,25 @@ class MainActivity : AppCompatActivity() {
                 when (it.itemId) {
                     R.id.navigationMenuShowDogInfo -> {
                         // 강아지 정보 전체 보기에 대한 처리 필요
-                        bundleData.putString("animal", "dog")
+                        bundleData.putString("animal", AnimalType.ANIMAL_TYPE_DOG.str)
                         replaceFragment(FragmentName.MAIN_FRAGMENT, false, bundleData)
                     }
 
                     R.id.navigationMenuShowCatInfo -> {
                         //  고양이 정보 전체 보기에 대한 처리 필요
-                        bundleData.putString("animal", "cat")
+                        bundleData.putString("animal", AnimalType.ANIMAL_TYPE_CAT.str)
                         replaceFragment(FragmentName.MAIN_FRAGMENT, false, bundleData)
                     }
 
                     R.id.navigationMenuShowParrotInfo -> {
                         // 앵무새 정보 전체 보기에 대한 처리 필요
-                        bundleData.putString("animal", "parrot")
+                        bundleData.putString("animal", AnimalType.ANIMAL_TYPE_PARROT.str)
                         replaceFragment(FragmentName.MAIN_FRAGMENT, false, bundleData)
                     }
 
                     R.id.navigationMenuShowAllAnimalInfo -> {
                         // 동물 전체 보기에 대한 처리
-                        bundleData.putString("animal", "all")
-                        replaceFragment(FragmentName.MAIN_FRAGMENT, false, bundleData)
+                        replaceFragment(FragmentName.MAIN_FRAGMENT, false, null)
                     }
                 }
                 // NavigationView를 닫는다.

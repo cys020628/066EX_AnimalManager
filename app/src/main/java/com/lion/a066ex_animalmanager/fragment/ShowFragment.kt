@@ -97,7 +97,7 @@ class ShowFragment : Fragment() {
     }
 
     // 다이얼로그
-    fun showDeleteDialog(){
+    private fun showDeleteDialog(){
         // 다이얼로그를 띄워주다.
         val materialAlertDialogBuilder = MaterialAlertDialogBuilder(mainActivity)
         materialAlertDialogBuilder.setTitle("삭제")
