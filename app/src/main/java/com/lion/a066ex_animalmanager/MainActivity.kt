@@ -5,6 +5,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.commit
 import com.google.android.material.transition.MaterialSharedAxis
@@ -34,6 +35,8 @@ class MainActivity : AppCompatActivity() {
         }
         // Navigation
         setUpNavigation()
+        // 화면의 드래그를 통해 drawerlayout이 열리는것을 막는다.
+        activityMainBinding.drawerlayoutMain.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         // 첫 실행시 보여줄 화면 세팅(MainFragment)
         replaceFragment(FragmentName.MAIN_FRAGMENT, false, null)
     }

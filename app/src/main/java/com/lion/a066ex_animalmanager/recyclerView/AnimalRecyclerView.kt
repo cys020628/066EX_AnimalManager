@@ -30,7 +30,7 @@ class AnimalRecyclerView(
         override fun onClick(v: View?) {
             // 누른 동물의 번호를 담아준다.
             val dataBundle = Bundle()
-            dataBundle.putInt("animalIdx", adapterPosition)
+            dataBundle.putInt("animalIdx", animalList[adapterPosition].animalIdx)
             // ShowFragment로 이동
             mainActivity.replaceFragment(FragmentName.SHOW_FRAGMENT, true, dataBundle)
         }
@@ -57,7 +57,6 @@ class AnimalRecyclerView(
         position: Int
     ) {
         holder.rowMainBinding.apply {
-            Log.e("test","리싸이클러뷰 ${animalList[position]}")
             textViewRowAnimalName.text = animalList[position].animalName
 
             imageViewRowAnimalType.setImageResource(when(animalList[position].animalType.str) {

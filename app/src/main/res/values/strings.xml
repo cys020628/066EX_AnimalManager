@@ -2,4 +2,9 @@
     <string name="app_name">066EX_AnimalManager</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="animalTypeFormat">종류: %s</string>
+    <string name="animalNameFormat">이름: %s</string>
+    <string name="animalAgeFormat">나이: %s살</string>
+    <string name="animalGenderFormat">성별: %s</string>
+    <string name="animalWeightFormat">몸무게: %skg</string>
 </resources>

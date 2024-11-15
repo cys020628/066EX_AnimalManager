@@ -83,6 +83,42 @@ class AnimalRepository(context: Context) {
             return animalViewModelList
         }
 
+        // Idx 값을 통해 동물 정보를 가져온다.
+        fun selectAnimalInfoByAnimalIdx(context: Context, animalIdx:Int) : AnimalViewModel{
+            // 데이터 베이스 객체
+            val animalDatabase = AnimalDatabase.getInstance(context)
+
+            // 학생 한명의 정보를 가져온다.
+            val animalVO = animalDatabase?.animalDAO()?.selectAnimalDataByAnimalIdx(animalIdx)
+            // 동물 객체에 담는다
+            val animalType = when(animalVO?.animalType){
+                AnimalType.ANIMAL_TYPE_DOG.number -> AnimalType.ANIMAL_TYPE_DOG
+                AnimalType.ANIMAL_TYPE_CAT.number -> AnimalType.ANIMAL_TYPE_CAT
+                else -> AnimalType.ANIMAL_TYPE_PARROT
+            }
+            // 동물 성별
+            val  animalGender = when(animalVO?.animalGender) {
+                AnimalGender.ANIMAL_GENDER_MALE.number -> AnimalGender.ANIMAL_GENDER_MALE
+                else -> AnimalGender.ANIMAL_GENDER_FEMALE
+            }
+
+            // 동물 Idx
+            val animalIdx = animalVO?.animalIdx
+
+            // 동물 이름
+            val animalName = animalVO?.animalName
+
+            // 동물 나이
+            val animalAge = animalVO?.animalAge
+
+            // 동물 무게
+            val animalWeight = animalVO?.animalWeight
+
+            val animalViewModel = AnimalViewModel(animalIdx!!, animalType, animalName!!, animalAge!!,animalGender,animalWeight!!)
+
+            return animalViewModel
+        }
+
         // 동물 정보 삭제 메서드
         fun deleteAnimalInfoByStudentIdx(context: Context, animalIdx: Int) {
             // 데이터 베이스 객체

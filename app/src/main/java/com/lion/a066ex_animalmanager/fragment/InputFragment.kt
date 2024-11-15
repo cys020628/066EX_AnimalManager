@@ -1,14 +1,17 @@
 package com.lion.a066ex_animalmanager.fragment
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.lion.a066ex_animalmanager.MainActivity
 import com.lion.a066ex_animalmanager.R
 import com.lion.a066ex_animalmanager.databinding.FragmentInputBinding
+import com.lion.a066ex_animalmanager.databinding.InputDialogLayoutBinding
 import com.lion.a066ex_animalmanager.repository.AnimalRepository
 import com.lion.a066ex_animalmanager.util.AnimalGender
 import com.lion.a066ex_animalmanager.util.AnimalType
@@ -58,9 +61,58 @@ class InputFragment : Fragment() {
             toolbarInput.setOnMenuItemClickListener {
                 when (it.itemId) {
                     // 정보 저장
-                    R.id.show_toolbar_menu_modify -> saveData()
+                    R.id.show_toolbar_menu_modify -> {
+                        if (isEmptyTextSW()) {
+                            // 빈공간이 없는 경우
+                            showDialog(1,"저장","저장 완료되었습니다")
+                        } else {
+                            // 빈공간이 있는 경우ㅊ
+                            showDialog(2,"오류","빈공간이 있습니다.\n다시 입력해주세요.")
+                        }
+                    }
                 }
                 true
+            }
+        }
+    }
+
+    private fun showDialog(value:Int,title: String, message: String) {
+        // 다이얼로그를 띄워주다.
+        val dialogBinding =InputDialogLayoutBinding.inflate(mainActivity.layoutInflater)
+        val materialAlertDialogBuilder =
+            MaterialAlertDialogBuilder(mainActivity)
+
+        materialAlertDialogBuilder.setView(dialogBinding.root)
+
+        val dialog = materialAlertDialogBuilder.create()
+
+        dialogBinding.dialogTitle.text = title
+        dialogBinding.dialogMessage.text = message
+
+        dialogBinding.dialogButton.setOnClickListener {
+            // value 값을 나눠 1이면 저장, 2이면 그냥 닫힘
+            when(value) {
+                1 -> {
+                    saveData()
+                    dialog.dismiss()
+                }
+                else -> dialog.dismiss()
+            }
+        }
+
+        dialog.show()
+    }
+
+
+    // 빈공간이 있는지 검사 하는 메서드
+    private fun isEmptyTextSW(): Boolean {
+        fragmentInputBinding.apply {
+            if ((textFieldInputName.editText?.text?.isEmpty() == true) or
+                (textFieldInputAge.editText?.text?.isEmpty() == true)
+            ) {
+                return false
+            } else {
+                return true
             }
         }
     }
@@ -89,7 +141,7 @@ class InputFragment : Fragment() {
 
             // 몸무게
             val animalWeight = sliderAnimalWeight.value.toInt()
-            Log.e("test","animalWeight : $animalWeight")
+            Log.e("test", "animalWeight : $animalWeight")
 
             // 객체에 담는다
             val animalViewModel =
